@@ -15,8 +15,8 @@ class Layout:
     
     _DARK = "#302c2c"
 
-    def __init__(self,ventana_inicio_sesion) -> None:
-        ventana_inicio_sesion.destroy()
+    def __init__(self) -> None:
+        #ventana_inicio_sesion.destroy()
 
         self.root = CTk()
         self.root.title("Diccionario - Ingles")
@@ -24,22 +24,26 @@ class Layout:
         self.root.columnconfigure(0,weight=1)
         self.config_apariencia = self.apariencia()
         self.root._set_appearance_mode("system") # system, dark, light
-
         self.root.rowconfigure(0,weight=0)
         self.root.rowconfigure(1,weight=1)
-
         self.root.config(border=20)
-
+        self.crear_titulo()
         self.tabs()
-        self.principal()
-
         self.root.mainloop()
-    
+
+    def crear_titulo(self):
+        frame = CTkFrame(self.root,height=400)
+        frame.grid(row=0,column=0,sticky="new")
+        frame.columnconfigure(0,weight=1)
+        self.titulo = CTkLabel(frame,text="Welcome Back",font=("Arial",40),height=80)
+        self.titulo.grid(row=0,column=0,sticky="ns")
+
     def tabs(self):
         self.tab_principal = CTkTabview(self.root)
         self.tab_principal.grid(row=1,column=0,sticky="news")
 
         self.tab1 = self.tab_principal.add("Words")
+        Palabras(self.tab1)
         
         tab2 = self.tab_principal.add("Phrases")
 
@@ -48,21 +52,12 @@ class Layout:
         tab4 = self.tab_principal.add("Settings")
         Configuraciones(tab4)
     
-    def principal(self):
-        entry = CTkEntry(self.tab1)
-        entry.grid(row=0,column=0)
-
-        frame = CTkFrame(self.root,height=400)
-        frame.grid(row=0,column=0,sticky="new")
-        frame.columnconfigure(0,weight=1)
-
-        self.titulo = CTkLabel(frame,text="Welcome Back",font=("Arial",40),height=80)
-        self.titulo.grid(row=0,column=0,sticky="ns")
-
     def apariencia(self):
         with open("Configuraciones.json") as archivo:
             configuraciones = json.load(archivo)
             return configuraciones["opciones_apariencia"]
+
+Layout()
 
 # def configuracion_fuente_widgets(self):
 #         with open("Recursos/Configuraciones.json") as archivo:

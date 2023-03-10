@@ -7,4 +7,8 @@ class Configuraciones:
     """
     def __init__(self,tab4) -> None:
         self.tab_configuraciones = tab4 #Recibe el tab creado del Modulo principal "Interfaz"
-    
+        self.widgets()
+        
+    def widgets(self):
+        bton = CTkButton(self.tab_configuraciones,text="Save Changes")
+        bton.grid(row=0,column=0)

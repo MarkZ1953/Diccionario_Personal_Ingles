@@ -53,10 +53,10 @@ class Iniciar_Sesion:
 
             if registros[0][0] == 1:
                 self.conexion.close()
-                Layout(self.root)
+                Layout()
             else:
                 messagebox.showerror("Error","The username or Password is incorrect")
         except Exception as e:
             print(f"Error {e}")
 
-# Iniciar_Sesion()
+Iniciar_Sesion()

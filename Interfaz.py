@@ -46,6 +46,7 @@ class Layout:
         Palabras(self.tab1)
         
         tab2 = self.tab_principal.add("Phrases")
+        Frases()
 
         tab3 = self.tab_principal.add("Topics")
 

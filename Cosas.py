@@ -1,10 +1,12 @@
-import tkinter
+from customtkinter import CTk,CTkButton
 
-raiz = tkinter.Tk()
+class Ejemplo:
+    def __init__(self) -> None:
+        self.root = CTk()
+        CTkButton(self.root,text="Cerrar",command=lambda:self.cerrar()).grid(row=0,column=0)
+        self.root.mainloop()
 
-entry = tkinter.Entry(raiz)
-entry.grid(row=0,column=0)
-entry.focus()
+    def cerrar(self):
+        self.root.destroy()
 
-
-raiz.mainloop()
+Ejemplo()

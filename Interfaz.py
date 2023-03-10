@@ -15,15 +15,15 @@ class Layout:
     
     _DARK = "#302c2c"
 
-    def __init__(self) -> None:
+    def __init__(self,ventana_inicio_sesion) -> None:
+        ventana_inicio_sesion.destroy()
+
         self.root = CTk()
         self.root.title("Diccionario - Ingles")
         centerwindows(self.root,600,600)
         self.root.columnconfigure(0,weight=1)
-        
         self.config_apariencia = self.apariencia()
         self.root._set_appearance_mode("system") # system, dark, light
-
 
         self.root.rowconfigure(0,weight=0)
         self.root.rowconfigure(1,weight=1)

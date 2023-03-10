@@ -8,10 +8,12 @@ class Iniciar_Sesion:
     def __init__(self) -> None:
         self.root = CTk()
         self.root.title("Login")
+        
         centerwindows(self.root,360,360)
         self.root.config(border=20)
         self.root.rowconfigure(0,weight=1)
         self.root.columnconfigure(0,weight=1)
+        self.root.resizable(False,False)
         self.conexion = Conexion.obtenerConexion()
         self.widgets()
         self.root.mainloop()
@@ -36,16 +38,22 @@ class Iniciar_Sesion:
         bton = CTkButton(frame,text="Accept",cursor="hand2",command=lambda:self.verificar())
         bton.grid(row=3,column=0,pady=30)
 
+        self.usuario.bind("<Return>",self.evento)
+        self.contrasena.bind("<Return>",self.evento)
+
+    def evento(self,e):
+        self.verificar()
+
     def verificar(self):
         try:
             with self.conexion.cursor() as cursor:
                 sql = "SELECT COUNT(*) FROM usuarios WHERE usuario = %s AND contrasena = %s"
-                cursor.execute(sql,(self.usuario.get(),self.contrasena.get()))
+                cursor.execute(sql,(self.usuario.get().strip(),self.contrasena.get().strip()))
                 registros = cursor.fetchall()
-                print(registros[0][0])
+
             if registros[0][0] == 1:
                 self.conexion.close()
-                Layout()
+                Layout(self.root)
             else:
                 messagebox.showerror("Error","The username or Password is incorrect")
         except Exception as e:

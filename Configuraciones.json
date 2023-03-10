@@ -1,3 +1,4 @@
 {
-    "apariencia": ["system","light","dark"] 
+    "opciones_apariencia": ["System","Light","Dark"],
+    "apariencia": "system"
 }

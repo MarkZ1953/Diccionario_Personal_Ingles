@@ -1,6 +1,13 @@
-from customtkinter import CTk,CTkEntry,CTkFrame,CTkTabview,CTkButton,CTkLabel
-from Utiles.Centrar_Ventana_Geometry import centerwindows
 import json
+
+from customtkinter import (CTk, CTkButton, CTkEntry, CTkFrame, CTkLabel,
+                           CTkTabview)
+from Utiles.Centrar_Ventana_Geometry import centerwindows
+
+from Tabs.Configuraciones import Configuraciones
+from Tabs.Frases import Frases
+from Tabs.Palabras import Palabras
+
 
 class Layout:
 
@@ -11,9 +18,11 @@ class Layout:
     def __init__(self) -> None:
         self.root = CTk()
         self.root.title("Diccionario - Ingles")
-        centerwindows(self.root,360,360)
+        centerwindows(self.root,600,600)
         self.root.columnconfigure(0,weight=1)
-        self.root._set_appearance_mode("white") # system, dark, light
+        
+        self.config_apariencia = self.apariencia()
+        self.root._set_appearance_mode("system") # system, dark, light
 
 
         self.root.rowconfigure(0,weight=0)
@@ -21,10 +30,8 @@ class Layout:
 
         self.root.config(border=20)
 
-        self.xd()
-
-        #self.tabs()
-        #self.principal()
+        self.tabs()
+        self.principal()
 
         self.root.mainloop()
     
@@ -33,9 +40,13 @@ class Layout:
         self.tab_principal.grid(row=1,column=0,sticky="news")
 
         self.tab1 = self.tab_principal.add("Words")
+        
         tab2 = self.tab_principal.add("Phrases")
+
         tab3 = self.tab_principal.add("Topics")
+
         tab4 = self.tab_principal.add("Settings")
+        Configuraciones(tab4)
     
     def principal(self):
         entry = CTkEntry(self.tab1)
@@ -48,12 +59,10 @@ class Layout:
         self.titulo = CTkLabel(frame,text="Welcome Back",font=("Arial",40),height=80)
         self.titulo.grid(row=0,column=0,sticky="ns")
 
-    def xd(self):
-        with json.load("Configuraciones.json") as archivo:
-            print(archivo.read())
-
-
-Layout()
+    def apariencia(self):
+        with open("Configuraciones.json") as archivo:
+            configuraciones = json.load(archivo)
+            return configuraciones["opciones_apariencia"]
 
 # def configuracion_fuente_widgets(self):
 #         with open("Recursos/Configuraciones.json") as archivo:

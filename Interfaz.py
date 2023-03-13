@@ -22,27 +22,33 @@ class Layout:
         self.root.title("Diccionario - Ingles")
         centerwindows(self.root,900,700)
         self.root.columnconfigure(0,weight=1)
-        self.config_apariencia = self.apariencia()
-        self.root._set_appearance_mode("system") # system, dark, light
         self.root.rowconfigure(0,weight=0)
         self.root.rowconfigure(1,weight=1)
+        self.root._set_appearance_mode("system") # system, dark, light
+        self.config_apariencia = self.apariencia()
         self.root.config(border=20)
         self.crear_titulo()
         self.tabs()
         self.root.mainloop()
 
     def crear_titulo(self):
+
         frame = CTkFrame(self.root,height=400)
         frame.grid(row=0,column=0,sticky="new")
         frame.columnconfigure(0,weight=1)
+
         self.titulo = CTkLabel(frame,text="Welcome Back",font=("Arial",40),height=80)
         self.titulo.grid(row=0,column=0,sticky="ns")
 
     def tabs(self):
+
         self.tab_principal = CTkTabview(self.root)
         self.tab_principal.grid(row=1,column=0,sticky="news")
+        self.tab_principal.columnconfigure(0,weight=1)
 
         self.tab1 = self.tab_principal.add("Words")
+        self.tab1.rowconfigure(0,weight=1)
+        self.tab1.columnconfigure(0,weight=1)
         Palabras(self.tab1)
         
         tab2 = self.tab_principal.add("Phrases")

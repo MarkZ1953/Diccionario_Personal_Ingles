@@ -20,7 +20,7 @@ class Layout:
 
         self.root = CTk()
         self.root.title("Diccionario - Ingles")
-        centerwindows(self.root,600,600)
+        centerwindows(self.root,900,700)
         self.root.columnconfigure(0,weight=1)
         self.config_apariencia = self.apariencia()
         self.root._set_appearance_mode("system") # system, dark, light

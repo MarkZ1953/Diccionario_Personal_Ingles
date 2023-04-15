@@ -1,5 +1,5 @@
 from customtkinter import CTkFrame, CTkEntry, CTkLabel, CTkToplevel, CTkButton, CTk
-from Utiles.Centrar_Ventana_Geometry import centerwindows
+
 from tkinter.ttk import Treeview
 from Conexion import Conexion
 
@@ -77,7 +77,7 @@ class Palabras:
         if not formulario_abierto:
             self.temp = CTk()
             self.temp.config(border=20)
-            centerwindows(self.temp,320,220)
+
             self.temp.rowconfigure(0,weight=1)
             self.temp.columnconfigure(0,weight=1)
             self.formulario()

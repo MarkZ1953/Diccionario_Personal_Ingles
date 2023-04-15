@@ -1,5 +1,5 @@
 from customtkinter import CTk,CTkLabel,CTkButton,CTkEntry,CTkFrame
-from Utiles.Centrar_Ventana_Geometry import centerwindows
+
 from Conexion import Conexion
 from Interfaz import Layout
 from tkinter import messagebox
@@ -9,7 +9,7 @@ class Iniciar_Sesion:
         self.root = CTk()
         self.root.title("Login")
         
-        centerwindows(self.root,360,360)
+
         self.root.config(border=20)
         self.root.rowconfigure(0,weight=1)
         self.root.columnconfigure(0,weight=1)

@@ -1,7 +1,7 @@
 from Conexion import Conexion
 
-class Diccionario:
-    
+
+class DiccionarioDB:
     _SELECCIONAR = "SELECT * FROM diccionario ORDER BY id_palabra"
     _INSERTAR = 'INSERT INTO diccionario(p_ingles, p_espanol, nota) VALUES(%s, %s, %s)'
 
@@ -13,13 +13,14 @@ class Diccionario:
                 registros = cursor.fetchall()
                 for registro in registros:
                     print(registro)
-    
+
     @classmethod
     def insertar(cls):
         with Conexion.obtenerConexion() as conexion:
             with Conexion.obtenerCursor() as cursor:
-                valores = ("Hello","Hola","Saludar a otra persona")
-                cursor.execute(cls._INSERTAR,valores)
-    
-# Diccionario().seleccionar()
-Diccionario().insertar()
+                valores = ("Hello", "Hola", "Saludar a otra persona")
+                cursor.execute(cls._INSERTAR, valores)
+
+
+if __name__ == '__main__':
+    DiccionarioDB().insertar()

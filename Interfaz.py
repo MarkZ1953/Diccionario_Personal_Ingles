@@ -3,9 +3,9 @@ import json
 from customtkinter import (CTk, CTkButton, CTkEntry, CTkFrame, CTkLabel,
                            CTkTabview)
 
-from Tabs.Configuraciones import Configuraciones
-from Tabs.Frases import Frases
-from Tabs.Palabras import Palabras
+from Tabuladores.TabConfiguraciones import Configuraciones
+from Tabuladores.TabFrases import Frases
+from Tabuladores.Palabras import Palabras
 
 
 class Layout:

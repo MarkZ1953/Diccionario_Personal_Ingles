@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QApplication
 
-from Tabs.Tabs import Tabs
+from Tabuladores.Tabs import Tabs
 
 
 class DiccionarioIngles(QMainWindow):

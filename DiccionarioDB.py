@@ -2,6 +2,7 @@ from Conexion import Conexion
 
 
 class DiccionarioDB:
+
     _SELECCIONAR = "SELECT * FROM diccionario ORDER BY id_palabra"
     _INSERTAR = 'INSERT INTO diccionario(p_ingles, p_espanol, nota) VALUES(%s, %s, %s)'
 

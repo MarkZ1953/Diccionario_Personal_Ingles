@@ -32,3 +32,18 @@ class PalabrasDB:
         with Conexion.obtenerConexion() as conexion:
             with conexion.cursor() as cursor:
                 cursor.execute(cls._ELIMINAR, (id_palabra,))
+
+    @classmethod
+    def seleccionar_una_columna(cls, columna):
+        with Conexion.obtenerConexion() as conexion:
+            with conexion.cursor() as cursor:
+                cursor.execute(f"SELECT {columna} FROM palabras")
+                palabras = []
+                for palabra in cursor.fetchall():
+                    palabras.append(palabra[0])
+                return palabras
+
+
+if __name__ == '__main__':
+    db = PalabrasDB()
+    print(db.seleccionar_una_columna())

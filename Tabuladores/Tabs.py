@@ -11,3 +11,7 @@ class Tabs(QTabWidget):
         tab_palabras = TabPalabras()
         self.addTab(tab_palabras, "Words")
 
+        # Creamos el tab de palabras
+        tab_frases = QWidget()
+        self.addTab(tab_frases, "Phrases")
+

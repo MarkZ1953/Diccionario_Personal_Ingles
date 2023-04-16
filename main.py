@@ -7,7 +7,7 @@ class DiccionarioIngles(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("English Dictionary")
-        self.resize(600, 600)
+        self.resize(800, 600)
 
         tabs = Tabs()
 

@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QBrush, QColor, QFont, QTextCharFormat
+from PySide6.QtGui import QBrush, QColor, QFont, QTextCharFormat, QIcon, QPixmap
 from PySide6.QtWidgets import QFrame, QTableWidget, QVBoxLayout, QHeaderView, QHBoxLayout, QPushButton, \
     QTableWidgetItem, QWidget, QLineEdit, QGridLayout, QLabel, QMessageBox, QErrorMessage
 
@@ -16,7 +16,7 @@ class TabPalabras(QFrame):
         # Creamos el menu de opciones y agregamos al layout_principal
         self.layout_menu = MenuOpcionesPalabras()
         layout_principal.addLayout(self.layout_menu)
-        self.layout_menu.ventana_agregar.btnAgregar.clicked.connect(self.agregar_palabra)
+        self.layout_menu.ventana_agregar.btnGuardar.clicked.connect(self.agregar_palabra)
 
         # Llamamos a la clase para crear y agregar la tabla a el layout_principal
         self.tabla_palabras = TablaPalabras()
@@ -28,7 +28,7 @@ class TabPalabras(QFrame):
         try:
             palabra_espanol = self.layout_menu.ventana_agregar.p_espanol.text().strip()
             palabra_ingles = self.layout_menu.ventana_agregar.p_ingles.text().strip()
-            descripcion =self.layout_menu.ventana_agregar.descripcion_p.text().strip()
+            descripcion = self.layout_menu.ventana_agregar.descripcion_p.text().strip()
 
             if palabra_espanol.isalpha() and palabra_ingles.isalpha():
                 datos = [
@@ -40,8 +40,12 @@ class TabPalabras(QFrame):
                 PalabrasDB().insertar_palabra(palabra_ingles=datos[0],
                                               palabra_espanol=datos[1],
                                               descripcion=datos[2])
+
+                QMessageBox.information(self, "Success Message for Adding a Word", "Success! The word has been added",
+                                        QMessageBox.StandardButton.Close)
             else:
-                QMessageBox.critical(self,"Error","HJoa", QMessageBox.StandardButton.Apply | QMessageBox.StandardButton.Close)
+                QMessageBox.critical(self, "Error", "Could not insert data, please restart or try again",
+                                     QMessageBox.StandardButton.Apply | QMessageBox.StandardButton.Close)
         except Exception as e:
             QMessageBox.critical(self,
                                  text=f"{e}",
@@ -58,15 +62,19 @@ class MenuOpcionesPalabras(QHBoxLayout):
         super().__init__()
 
         self.ventana_agregar = VentanaAgregarPalabra()
+        self.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
-        btnAgregar = QPushButton(text="Add Word")
+        btnAgregar = QPushButton(text="Add Word", icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint--plus.png")))
+        btnAgregar.setFixedSize(120, 40)
         btnAgregar.pressed.connect(self.abrir_ventana_agregar)
         self.addWidget(btnAgregar)
 
-        btnEliminar = QPushButton(text="Delete Word")
+        btnEliminar = QPushButton(text="Delete Word", icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint--minus.png")))
+        btnEliminar.setFixedSize(120, 40)
         self.addWidget(btnEliminar)
 
-        btnEditar = QPushButton(text="Edit Word")
+        btnEditar = QPushButton(text="Edit Word", icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint--pencil.png")))
+        btnEditar.setFixedSize(120, 40)
         self.addWidget(btnEditar)
 
     def abrir_ventana_agregar(self):
@@ -81,6 +89,7 @@ class VentanaAgregarPalabra(QWidget):
         super().__init__()
         self.resize(400, 150)
         self.setContentsMargins(10, 10, 10, 10)
+        self.setWindowIcon(QIcon(QPixmap("Imagenes/book.png")))
 
         layout_principal = QGridLayout()
 
@@ -100,14 +109,17 @@ class VentanaAgregarPalabra(QWidget):
         self.descripcion_p = QLineEdit()
         layout_principal.addWidget(self.descripcion_p, 2, 1)
 
-        self.btnAgregar = QPushButton("Add")
-        layout_botones.addWidget(self.btnAgregar)
+        self.btnGuardar = QPushButton("Save", icon=QIcon(QPixmap("Imagenes/disk.png")))
+        self.btnGuardar.setFixedSize(80, 30)
+        layout_botones.addWidget(self.btnGuardar)
 
-        btnNuevo = QPushButton("New")
-        btnNuevo.pressed.connect(self.limpiar_cajas)
+        btnNuevo = QPushButton("New", icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint.png")))
+        btnNuevo.clicked.connect(self.limpiar_cajas)
+        btnNuevo.setFixedSize(80, 30)
         layout_botones.addWidget(btnNuevo)
 
         btnSalir = QPushButton("Exit")
+        btnSalir.setFixedSize(80, 30)
         layout_botones.addWidget(btnSalir)
 
         self.setLayout(layout_principal)
@@ -132,7 +144,6 @@ class TablaPalabras(QTableWidget):
         self.actualizar_tabla()
 
     def actualizar_tabla(self):
-
         datos = PalabrasDB().seleccionar_todas_las_palabras()
 
         format = QTextCharFormat()

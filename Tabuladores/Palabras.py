@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QTableWidget, QHeaderView
 from customtkinter import CTkFrame, CTkEntry, CTkLabel, CTkToplevel, CTkButton, CTk
 
 from tkinter.ttk import Treeview
-from Conexion import Conexion
+from ConexionDB import Conexion
 
 # Se declara una varible la cual el proposito de ella sera mantener el control
 # de la cantidad de formularios que se puedan abrir al momento de querer agregar una nueva palabra.

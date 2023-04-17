@@ -1,4 +1,4 @@
-from Conexion import Conexion
+from ConexionDB import Conexion
 
 
 class PalabrasDB:

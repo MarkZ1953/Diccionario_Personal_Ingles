@@ -26,7 +26,7 @@ class VentanaEditarPalabras(QWidget):
 
         self.id_word = QLineEdit()
         layout_principal.addWidget(self.id_word, 0, 1)
-        # self.id_word.textChanged.connect(self.verificar_y_cambiar_textos_p_ingles)
+        self.id_word.textChanged.connect(self.verificar_y_cambiar_textos_id)
         self.id_word.setFixedHeight(30)
 
         self.p_ingles = QLineEdit()
@@ -92,6 +92,15 @@ class VentanaEditarPalabras(QWidget):
             self.p_ingles.setText(palabra[1])
             self.descripcion_p.setText(palabra[3])
         except TypeError as e:
+            pass
+
+    def verificar_y_cambiar_textos_id(self):
+        try:
+            palabra = PalabrasDB.seleccionar_registro_id(self.id_word.text())
+            self.p_espanol.setText(palabra[2])
+            self.p_ingles.setText(palabra[1])
+            self.descripcion_p.setText(palabra[3])
+        except Exception as e:
             pass
 
     def limpiar_cajas(self):

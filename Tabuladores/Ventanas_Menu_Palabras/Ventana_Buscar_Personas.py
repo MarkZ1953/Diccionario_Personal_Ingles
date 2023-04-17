@@ -17,32 +17,31 @@ class VentanaBuscarPalabras(QWidget):
         layout_principal = QGridLayout()
 
         self.layout_botones = QVBoxLayout()
-        layout_principal.addLayout(self.layout_botones, 0, 2, 3, 1)
+        layout_principal.addLayout(self.layout_botones, 0, 2, 4, 1)
 
-        layout_principal.addWidget(QLabel("English Word"), 0, 0)
-        layout_principal.addWidget(QLabel("Spanish Translation"), 1, 0)
-        layout_principal.addWidget(QLabel("Word Description"), 2, 0)
+        layout_principal.addWidget(QLabel("Id Word"), 0, 0)
+        layout_principal.addWidget(QLabel("English Word"), 1, 0)
+        layout_principal.addWidget(QLabel("Spanish Translation"), 2, 0)
+        layout_principal.addWidget(QLabel("Word Description"), 3, 0)
 
-        self.titulo_ventana = ""
+        self.id_word = QLineEdit()
+        layout_principal.addWidget(self.id_word, 0, 1)
+        self.id_word.textChanged.connect(self.verificar_y_cambiar_textos_id)
+        self.id_word.setFixedHeight(30)
 
         self.p_ingles = QLineEdit()
-        layout_principal.addWidget(self.p_ingles, 0, 1)
+        layout_principal.addWidget(self.p_ingles, 1, 1)
         self.p_ingles.textChanged.connect(self.verificar_y_cambiar_textos_p_ingles)
         self.p_ingles.setFixedHeight(30)
 
         self.p_espanol = QLineEdit()
         self.p_espanol.setFixedHeight(30)
         self.p_espanol.textChanged.connect(self.verificar_y_cambiar_textos_p_espanol)
-        layout_principal.addWidget(self.p_espanol, 1, 1)
+        layout_principal.addWidget(self.p_espanol, 2, 1)
 
         self.descripcion_p = QTextEdit()
         self.setMinimumSize(100, 120)
-        layout_principal.addWidget(self.descripcion_p, 2, 1)
-
-        self.btnGuardar = QPushButton("Save")
-        self.btnGuardar.setIcon(QIcon(QPixmap("Imagenes/disk.png")))
-        self.btnGuardar.setFixedSize(80, 35)
-        self.layout_botones.addWidget(self.btnGuardar)
+        layout_principal.addWidget(self.descripcion_p, 3, 1)
 
         self.btnNuevo = QPushButton("Clean")
         self.btnNuevo.setIcon(QIcon(QPixmap("Imagenes/Blueprint/blueprint.png")))
@@ -75,6 +74,7 @@ class VentanaBuscarPalabras(QWidget):
     def verificar_y_cambiar_textos_p_ingles(self):
         try:
             palabra = PalabrasDB.seleccionar_registro_p_ingles(self.p_ingles.text())
+            self.id_word.setText(str(palabra[0]))
             self.p_espanol.setText(palabra[2])
             self.descripcion_p.setText(palabra[3])
         except TypeError as e:
@@ -83,9 +83,19 @@ class VentanaBuscarPalabras(QWidget):
     def verificar_y_cambiar_textos_p_espanol(self):
         try:
             palabra = PalabrasDB.seleccionar_registro_p_espanol(self.p_espanol.text())
+            self.id_word.setText(str(palabra[0]))
             self.p_ingles.setText(palabra[1])
             self.descripcion_p.setText(palabra[3])
         except TypeError as e:
+            pass
+
+    def verificar_y_cambiar_textos_id(self):
+        try:
+            palabra = PalabrasDB.seleccionar_registro_id(self.id_word.text())
+            self.p_espanol.setText(palabra[2])
+            self.p_ingles.setText(palabra[1])
+            self.descripcion_p.setText(palabra[3])
+        except Exception as e:
             pass
 
     def limpiar_cajas(self):

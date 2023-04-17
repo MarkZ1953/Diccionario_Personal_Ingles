@@ -38,7 +38,7 @@ class VentanaAgregarPalabras(QWidget):
         layout_principal.addWidget(self.descripcion_p, 2, 1)
 
         self.btnGuardar = QPushButton("Save")
-        self.btnGuardar.setIcon(QIcon(QPixmap("Imagenes/disk.png")))
+        self.btnGuardar.setIcon(QIcon(QPixmap("Imagenes/Disk/disk--plus.png")))
         self.btnGuardar.setFixedSize(80, 35)
         self.layout_botones.addWidget(self.btnGuardar)
 

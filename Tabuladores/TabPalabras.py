@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QFrame, QTableWidget, QVBoxLayout, QHeaderView, QH
     QTableWidgetItem, QWidget, QLineEdit, QGridLayout, QLabel, QMessageBox, QErrorMessage, QTextEdit, QCompleter
 
 from PalabrasDB import PalabrasDB
+from Tabuladores.Ventanas_Menu_Palabras.VentanaAgregarPalabras import VentanaAgregarPalabras
 
 
 class TabPalabras(QFrame):
@@ -55,7 +56,7 @@ class MenuOpcionesPalabras(QHBoxLayout):
     def __init__(self):
         super().__init__()
 
-        self.ventana_agregar = VentanaDatos()
+        self.ventana_agregar = VentanaAgregarPalabras()
         self.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
         self.btnAgregar = QPushButton(text="Add Word", icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint--plus.png")))
@@ -63,13 +64,15 @@ class MenuOpcionesPalabras(QHBoxLayout):
         self.btnAgregar.pressed.connect(self.abrir_ventana_agregar)
         self.addWidget(self.btnAgregar)
 
-        btnEliminar = QPushButton(text="Delete Word", icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint--minus.png")))
-        btnEliminar.setFixedSize(120, 40)
-        self.addWidget(btnEliminar)
+        self.btnEliminar = QPushButton(text="Delete Word", icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint--minus.png")))
+        self.btnEliminar.setFixedSize(120, 40)
+        # self.btnEliminar.pressed.connect(self.eliminar_registro)
+        self.addWidget(self.btnEliminar)
 
-        btnEditar = QPushButton(text="Edit Word", icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint--pencil.png")))
-        btnEditar.setFixedSize(120, 40)
-        self.addWidget(btnEditar)
+        self.btnEditar = QPushButton(text="Edit Word", icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint--pencil.png")))
+        # self.btnEditar.pressed.connect(self.abrir_ventana_editar)
+        self.btnEditar.setFixedSize(120, 40)
+        self.addWidget(self.btnEditar)
 
         separator = QFrame()
         separator.setFrameShape(QFrame.Shape.VLine)
@@ -79,29 +82,38 @@ class MenuOpcionesPalabras(QHBoxLayout):
 
         btnBuscar = QPushButton(text="Search Word", icon=QIcon(QPixmap("Imagenes/blue-document-search-result.png")))
         btnBuscar.setFixedSize(120, 40)
-        btnBuscar.clicked.connect(self.buscar)
+        # btnBuscar.clicked.connect(self.buscar)
         self.addWidget(btnBuscar)
 
+    def abrir_ventana_editar(self):
+        if not self.ventana_agregar.isVisible():
+            self.ventana_agregar.show()
+            self.ventana_agregar.btnGuardar.show()
+            self.ventana_agregar.btnGuardar.clicked.connect(self.editar_palabra)
+            self.ventana_agregar.btnNuevo.hide()
+            self.ventana_agregar.setWindowTitle("Edit Word")
+
+    def editar_palabra(self, id_palabra = 0):
+        """
+        Orden:
+        (Palabra espanol, palabra ingles, descripcion palabra, id_palabra)
+        """
+        print(self.ventana_agregar.windowTitle())
+        # PalabrasDB.actualizar_registro(self.ventana_agregar.p_espanol.text(),
+        #                                self.ventana_agregar.p_ingles.text(),
+        #                                self.ventana_agregar.descripcion_p.toPlainText(),
+        #                                id_palabra)
+
+    def eliminar_registro(self):
+        pass
+
     def buscar(self):
-
-        palabras_espanol = PalabrasDB.seleccionar_una_columna("p_espanol")
-        palabras_ingles = PalabrasDB.seleccionar_una_columna("p_ingles")
-
-        resultados_espanol = QCompleter(palabras_espanol)
-        resultados_espanol.setCaseSensitivity(Qt.CaseInsensitive)
-        resultados_espanol.setFilterMode(Qt.MatchContains)
-
-        resultados_ingles = QCompleter(palabras_ingles)
-        resultados_ingles.setCaseSensitivity(Qt.CaseInsensitive)
-        resultados_ingles.setFilterMode(Qt.MatchContains)
 
         if not self.ventana_agregar.isVisible():
             self.ventana_agregar.show()
             self.ventana_agregar.setWindowTitle("Search Word")
             self.ventana_agregar.btnGuardar.hide()
             self.ventana_agregar.btnNuevo.hide()
-            self.ventana_agregar.p_espanol.setCompleter(resultados_espanol)
-            self.ventana_agregar.p_ingles.setCompleter(resultados_ingles)
 
     def abrir_ventana_agregar(self):
         if not self.ventana_agregar.isVisible() and self.btnAgregar.pressed:
@@ -111,60 +123,6 @@ class MenuOpcionesPalabras(QHBoxLayout):
             self.ventana_agregar.show()
         else:
             self.ventana_agregar.show()
-
-
-class VentanaDatos(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Add Word")
-        self.setFixedSize(400, 180)
-        self.setContentsMargins(10, 10, 10, 10)
-        self.setWindowIcon(QIcon(QPixmap("Imagenes/book.png")))
-
-        layout_principal = QGridLayout()
-
-        layout_botones = QVBoxLayout()
-        layout_principal.addLayout(layout_botones, 0, 2, 3, 1)
-
-        layout_principal.addWidget(QLabel("English Word"), 0, 0)
-        layout_principal.addWidget(QLabel("Spanish Translation"), 1, 0)
-        layout_principal.addWidget(QLabel("Word Description"), 2, 0)
-
-        self.p_ingles = QLineEdit()
-        layout_principal.addWidget(self.p_ingles, 0, 1)
-        self.p_ingles.setFixedHeight(30)
-
-        self.p_espanol = QLineEdit()
-        self.p_espanol.setFixedHeight(30)
-        layout_principal.addWidget(self.p_espanol, 1, 1)
-
-        self.descripcion_p = QTextEdit()
-        self.setMinimumSize(100, 120)
-        layout_principal.addWidget(self.descripcion_p, 2, 1)
-
-        self.btnGuardar = QPushButton("Save")
-        self.btnGuardar.setIcon(QIcon(QPixmap("Imagenes/disk.png")))
-        self.btnGuardar.setFixedSize(80, 35)
-        layout_botones.addWidget(self.btnGuardar)
-
-        self.btnNuevo = QPushButton("New")
-        self.btnNuevo.setIcon(QIcon(QPixmap("Imagenes/Blueprint/blueprint.png")))
-        self.btnNuevo.clicked.connect(self.limpiar_cajas)
-        self.btnNuevo.setFixedSize(80, 35)
-        layout_botones.addWidget(self.btnNuevo)
-
-        btnSalir = QPushButton("Exit")
-        btnSalir.setIcon(QIcon(QPixmap("Imagenes/cross-circle.png")))
-        btnSalir.clicked.connect(lambda: self.close())
-        btnSalir.setFixedSize(80, 35)
-        layout_botones.addWidget(btnSalir)
-
-        self.setLayout(layout_principal)
-
-    def limpiar_cajas(self):
-        self.p_ingles.setText("")
-        self.p_espanol.setText("")
-        self.descripcion_p.setText("")
 
 
 class TablaPalabras(QTableWidget):

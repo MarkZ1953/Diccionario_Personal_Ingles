@@ -8,7 +8,6 @@ class Iniciar_Sesion:
         self.root.config(border=20)
         self.root.rowconfigure(0, weight=1)
         self.root.columnconfigure(0, weight=1)
-        self.root.resizable(False, False)
         self.widgets()
         self.root.mainloop()
 

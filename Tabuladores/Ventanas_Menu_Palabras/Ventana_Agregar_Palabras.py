@@ -10,7 +10,7 @@ class VentanaAgregarPalabras(QWidget):
         super().__init__()
 
         self.setWindowTitle("Add Word")
-        self.setFixedSize(400, 180)
+        self.setFixedSize(400, 200)
         self.setContentsMargins(10, 10, 10, 10)
         self.setWindowIcon(QIcon(QPixmap("Imagenes/book.png")))
 
@@ -22,9 +22,6 @@ class VentanaAgregarPalabras(QWidget):
         layout_principal.addWidget(QLabel("English Word"), 0, 0)
         layout_principal.addWidget(QLabel("Spanish Translation"), 1, 0)
         layout_principal.addWidget(QLabel("Word Description"), 2, 0)
-
-        self.variable_titulo = False
-        self.titulo_ventana = ""
 
         self.p_ingles = QLineEdit()
         layout_principal.addWidget(self.p_ingles, 0, 1)
@@ -85,14 +82,8 @@ class VentanaAgregarPalabras(QWidget):
             palabra = PalabrasDB.seleccionar_registro_p_espanol(self.p_espanol.text())
             self.p_ingles.setText(palabra[1])
             self.descripcion_p.setText(palabra[3])
-
-            if not self.variable_titulo:
-                self.titulo_ventana = self.windowTitle()
-                print(self.titulo_ventana)
-                self.variable_titulo = True
-
             self.setWindowTitle("")
-            self.setWindowTitle(f"{self.titulo_ventana} | Id: {palabra[0]}")
+            self.setWindowTitle(f"Add Word | Id: {palabra[0]}")
         except TypeError as e:
             pass
 

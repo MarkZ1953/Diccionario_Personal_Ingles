@@ -4,7 +4,10 @@ from PySide6.QtWidgets import QFrame, QTableWidget, QVBoxLayout, QHeaderView, QH
     QTableWidgetItem, QWidget, QLineEdit, QGridLayout, QLabel, QMessageBox, QErrorMessage, QTextEdit, QCompleter
 
 from PalabrasDB import PalabrasDB
-from Tabuladores.Ventanas_Menu_Palabras.VentanaAgregarPalabras import VentanaAgregarPalabras
+from Tabuladores.Ventanas_Menu_Palabras.Ventana_Agregar_Palabras import VentanaAgregarPalabras
+from Tabuladores.Ventanas_Menu_Palabras.Ventana_Buscar_Personas import VentanaBuscarPalabras
+from Tabuladores.Ventanas_Menu_Palabras.Ventana_Editar_Palabras import VentanaEditarPalabras
+from Tabuladores.Ventanas_Menu_Palabras.Ventana_Eliminar_Personas import VentanaEliminarPalabras
 
 
 class TabPalabras(QFrame):
@@ -18,6 +21,8 @@ class TabPalabras(QFrame):
         self.layout_menu = MenuOpcionesPalabras()
         layout_principal.addLayout(self.layout_menu)
         self.layout_menu.ventana_agregar.btnGuardar.clicked.connect(self.agregar_palabra)
+
+        self.layout_menu.ventana_editar.btnGuardar.clicked.connect(self.editar_palabra)
 
         # Llamamos a la clase para crear y agregar la tabla a el layout_principal
         self.tabla_palabras = TablaPalabras()
@@ -51,12 +56,34 @@ class TabPalabras(QFrame):
             self.tabla_palabras.setRowCount(0)
             self.tabla_palabras.actualizar_tabla()
 
+    def editar_palabra(self):
+        try:
+            id_palabra = self.layout_menu.ventana_editar.id_word.text()
+            palabra_espanol = self.layout_menu.ventana_editar.p_espanol.text().strip()
+            palabra_ingles = self.layout_menu.ventana_editar.p_ingles.text().strip()
+            descripcion = self.layout_menu.ventana_editar.descripcion_p.toPlainText().strip()
+
+            # Orden: (Palabra espanol, palabra ingles, descripcion palabra, id_palabra)
+            PalabrasDB.actualizar_registro(palabra_espanol=palabra_espanol,
+                                           palabra_ingles=palabra_ingles,
+                                           descripcion_palabra=descripcion,
+                                           id_palabra=id_palabra)
+        except Exception as e:
+            pass
+        finally:
+            self.tabla_palabras.setRowCount(0)
+            self.tabla_palabras.actualizar_tabla()
+
 
 class MenuOpcionesPalabras(QHBoxLayout):
     def __init__(self):
         super().__init__()
 
         self.ventana_agregar = VentanaAgregarPalabras()
+        self.ventana_eliminar = VentanaEliminarPalabras()
+        self.ventana_editar = VentanaEditarPalabras()
+        self.ventana_buscar = VentanaBuscarPalabras()
+
         self.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
         self.btnAgregar = QPushButton(text="Add Word", icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint--plus.png")))
@@ -66,11 +93,11 @@ class MenuOpcionesPalabras(QHBoxLayout):
 
         self.btnEliminar = QPushButton(text="Delete Word", icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint--minus.png")))
         self.btnEliminar.setFixedSize(120, 40)
-        # self.btnEliminar.pressed.connect(self.eliminar_registro)
+        self.btnEliminar.pressed.connect(self.abrir_ventana_eliminar)
         self.addWidget(self.btnEliminar)
 
         self.btnEditar = QPushButton(text="Edit Word", icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint--pencil.png")))
-        # self.btnEditar.pressed.connect(self.abrir_ventana_editar)
+        self.btnEditar.pressed.connect(self.abrir_ventana_editar)
         self.btnEditar.setFixedSize(120, 40)
         self.addWidget(self.btnEditar)
 
@@ -82,44 +109,23 @@ class MenuOpcionesPalabras(QHBoxLayout):
 
         btnBuscar = QPushButton(text="Search Word", icon=QIcon(QPixmap("Imagenes/blue-document-search-result.png")))
         btnBuscar.setFixedSize(120, 40)
-        # btnBuscar.clicked.connect(self.buscar)
+        btnBuscar.clicked.connect(self.abrir_ventana_buscar)
         self.addWidget(btnBuscar)
 
     def abrir_ventana_editar(self):
-        if not self.ventana_agregar.isVisible():
-            self.ventana_agregar.show()
-            self.ventana_agregar.btnGuardar.show()
-            self.ventana_agregar.btnGuardar.clicked.connect(self.editar_palabra)
-            self.ventana_agregar.btnNuevo.hide()
-            self.ventana_agregar.setWindowTitle("Edit Word")
+        if not self.ventana_editar.isVisible():
+            self.ventana_editar.show()
 
-    def editar_palabra(self, id_palabra = 0):
-        """
-        Orden:
-        (Palabra espanol, palabra ingles, descripcion palabra, id_palabra)
-        """
-        print(self.ventana_agregar.windowTitle())
-        # PalabrasDB.actualizar_registro(self.ventana_agregar.p_espanol.text(),
-        #                                self.ventana_agregar.p_ingles.text(),
-        #                                self.ventana_agregar.descripcion_p.toPlainText(),
-        #                                id_palabra)
+    def abrir_ventana_eliminar(self):
+        if not self.ventana_eliminar.isVisible():
+            self.ventana_eliminar.show()
 
-    def eliminar_registro(self):
-        pass
-
-    def buscar(self):
-
-        if not self.ventana_agregar.isVisible():
-            self.ventana_agregar.show()
-            self.ventana_agregar.setWindowTitle("Search Word")
-            self.ventana_agregar.btnGuardar.hide()
-            self.ventana_agregar.btnNuevo.hide()
+    def abrir_ventana_buscar(self):
+        if not self.ventana_buscar.isVisible():
+            self.ventana_buscar.show()
 
     def abrir_ventana_agregar(self):
-        if not self.ventana_agregar.isVisible() and self.btnAgregar.pressed:
-            self.ventana_agregar.setWindowTitle("Add Word")
-            self.ventana_agregar.btnGuardar.show()
-            self.ventana_agregar.btnNuevo.show()
+        if not self.ventana_agregar.isVisible():
             self.ventana_agregar.show()
         else:
             self.ventana_agregar.show()

@@ -99,6 +99,7 @@ class VentanaBuscarPalabras(QWidget):
             pass
 
     def limpiar_cajas(self):
+        self.id_word.setText("")
         self.p_ingles.setText("")
         self.p_espanol.setText("")
         self.descripcion_p.setText("")

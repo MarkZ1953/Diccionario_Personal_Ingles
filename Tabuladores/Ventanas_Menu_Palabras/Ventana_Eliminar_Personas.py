@@ -54,19 +54,7 @@ class VentanaEliminarPalabras(QWidget):
         self.btnNuevo.setFixedSize(80, 35)
         self.layout_botones.addWidget(self.btnNuevo)
 
-        palabras_espanol = PalabrasDB.seleccionar_una_columna("p_espanol")
-        palabras_ingles = PalabrasDB.seleccionar_una_columna("p_ingles")
-
-        resultados_espanol = QCompleter(palabras_espanol)
-        resultados_espanol.setCaseSensitivity(Qt.CaseInsensitive)
-        resultados_espanol.setFilterMode(Qt.MatchContains)
-
-        resultados_ingles = QCompleter(palabras_ingles)
-        resultados_ingles.setCaseSensitivity(Qt.CaseInsensitive)
-        resultados_ingles.setFilterMode(Qt.MatchContains)
-
-        self.p_espanol.setCompleter(resultados_espanol)
-        self.p_ingles.setCompleter(resultados_ingles)
+        self.actualizar_completer()
 
         btnSalir = QPushButton("Exit")
         btnSalir.setIcon(QIcon(QPixmap("Imagenes/cross-circle.png")))
@@ -108,3 +96,19 @@ class VentanaEliminarPalabras(QWidget):
         self.p_ingles.setText("")
         self.p_espanol.setText("")
         self.descripcion_p.setText("")
+
+    def actualizar_completer(self):
+
+        palabras_espanol = PalabrasDB.seleccionar_una_columna("p_espanol")
+        palabras_ingles = PalabrasDB.seleccionar_una_columna("p_ingles")
+
+        resultados_espanol = QCompleter(palabras_espanol)
+        resultados_espanol.setCaseSensitivity(Qt.CaseInsensitive)
+        resultados_espanol.setFilterMode(Qt.MatchContains)
+
+        resultados_ingles = QCompleter(palabras_ingles)
+        resultados_ingles.setCaseSensitivity(Qt.CaseInsensitive)
+        resultados_ingles.setFilterMode(Qt.MatchContains)
+
+        self.p_espanol.setCompleter(resultados_espanol)
+        self.p_ingles.setCompleter(resultados_ingles)

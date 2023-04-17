@@ -24,6 +24,8 @@ class TabPalabras(QFrame):
 
         self.layout_menu.ventana_editar.btnGuardar.clicked.connect(self.editar_palabra)
 
+        self.layout_menu.ventana_eliminar.btnGuardar.clicked.connect(self.eliminar_palabra)
+
         # Llamamos a la clase para crear y agregar la tabla a el layout_principal
         self.tabla_palabras = TablaPalabras()
         layout_principal.addWidget(self.tabla_palabras)
@@ -73,6 +75,18 @@ class TabPalabras(QFrame):
         finally:
             self.tabla_palabras.setRowCount(0)
             self.tabla_palabras.actualizar_tabla()
+            self.layout_menu.ventana_editar.actualizar_completer()
+
+    def eliminar_palabra(self):
+        try:
+            id_palabra = self.layout_menu.ventana_eliminar.id_word.text()
+            PalabrasDB.eliminar_palabra(id_palabra=id_palabra)
+        except Exception as e:
+            pass
+        finally:
+            self.tabla_palabras.setRowCount(0)
+            self.tabla_palabras.actualizar_tabla()
+            self.layout_menu.ventana_eliminar.actualizar_completer()
 
 
 class MenuOpcionesPalabras(QHBoxLayout):

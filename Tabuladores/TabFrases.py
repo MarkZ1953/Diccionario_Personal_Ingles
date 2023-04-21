@@ -1,10 +1,11 @@
+import re
+
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QPixmap, QTextCharFormat, QBrush, QColor, QFont
 from PySide6.QtWidgets import QFrame, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QMessageBox, QPushButton, QHeaderView, \
     QTableWidget
 
 from FrasesDB import FrasesDB
-from PalabrasDB import PalabrasDB
 from Tabuladores.Ventana_Menu_Frases.Ventana_Agregar_Frases import VentanaAgregarFrases
 from Tabuladores.Ventana_Menu_Frases.Ventana_Buscar_Frases import VentanaBuscarFrases
 from Tabuladores.Ventana_Menu_Frases.Ventana_Editar_Frases import VentanaEditarFrases
@@ -33,27 +34,38 @@ class TabFrases(QFrame):
         self.setLayout(layout_principal)
 
     def agregar_palabra(self):
+        print("entro")
         try:
-            palabra_espanol = self.layout_menu.ventana_agregar.f_espanol.text().strip()
-            palabra_ingles = self.layout_menu.ventana_agregar.f_ingles.text().strip()
+            frase_espanol = self.layout_menu.ventana_agregar.f_espanol.text().strip()
+            frase_ingles = self.layout_menu.ventana_agregar.f_ingles.text().strip()
+            print(frase_ingles, frase_espanol)
+            categoria = self.layout_menu.ventana_agregar.categoria_f.currentText()
             descripcion = self.layout_menu.ventana_agregar.descripcion_f.toPlainText().strip()
 
-            if palabra_espanol.isalpha() and palabra_ingles.isalpha():
-                datos = [
-                    palabra_ingles,
-                    palabra_espanol,
-                    descripcion
-                ]
+            print(frase_ingles.isalpha())
+            print(frase_espanol.isalpha())
 
-                PalabrasDB().insertar_palabra(palabra_ingles=datos[0],
-                                              palabra_espanol=datos[1],
-                                              descripcion=datos[2])
+            # if re.match(r'^[\p{L}\s]+$', frase_ingles, re.UNICODE) and re.match(r'^[\p{L}\s]+$', frase_espanol, re.UNICODE):
 
-            else:
-                QMessageBox.critical(self, "Error", "Could not insert data, please restart or try again",
-                                     QMessageBox.StandardButton.Apply | QMessageBox.StandardButton.Close)
+            datos = [
+                frase_ingles,
+                frase_espanol,
+                categoria,
+                descripcion
+            ]
+
+            print(datos)
+
+            FrasesDB.insertar_frase(frase_ingles=datos[0],
+                                    frase_espanol=datos[1],
+                                    categoria=datos[2],
+                                    descripcion_frase=datos[3])
+
+            # else:
+            #     QMessageBox.critical(self, "Error", "Could not insert data, please restart or try again",
+            #                          QMessageBox.StandardButton.Apply | QMessageBox.StandardButton.Close)
         except Exception as e:
-            pass
+            print(e)
         finally:
             self.tabla_palabras.setRowCount(0)
             self.tabla_palabras.actualizar_tabla()
@@ -66,10 +78,10 @@ class TabFrases(QFrame):
             descripcion = self.layout_menu.ventana_editar.descripcion_p.toPlainText().strip()
 
             # Orden: (Palabra espanol, palabra ingles, descripcion palabra, id_palabra)
-            PalabrasDB.actualizar_registro(palabra_espanol=palabra_espanol,
-                                           palabra_ingles=palabra_ingles,
-                                           descripcion_palabra=descripcion,
-                                           id_palabra=id_palabra)
+            # FrasesDB.actualizar_registro(palabra_espanol=palabra_espanol,
+            #                                palabra_ingles=palabra_ingles,
+            #                                descripcion_palabra=descripcion,
+            #                                id_palabra=id_palabra)
         except Exception as e:
             pass
         finally:
@@ -80,7 +92,7 @@ class TabFrases(QFrame):
     def eliminar_palabra(self):
         try:
             id_palabra = self.layout_menu.ventana_eliminar.id_word.text()
-            PalabrasDB.eliminar_palabra(id_palabra=id_palabra)
+            # PalabrasDB.eliminar_palabra(id_palabra=id_palabra)
         except Exception as e:
             pass
         finally:
@@ -100,19 +112,19 @@ class MenuOpcionesFrases(QHBoxLayout):
 
         self.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
-        self.btnAgregar = QPushButton(text="Add Word",
+        self.btnAgregar = QPushButton(text="Add Phrase",
                                       icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint--plus.png")))
         self.btnAgregar.setFixedSize(120, 40)
         self.btnAgregar.pressed.connect(self.abrir_ventana_agregar)
         self.addWidget(self.btnAgregar)
 
-        self.btnEliminar = QPushButton(text="Delete Word",
+        self.btnEliminar = QPushButton(text="Delete Phrase",
                                        icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint--minus.png")))
         self.btnEliminar.setFixedSize(120, 40)
         self.btnEliminar.pressed.connect(self.abrir_ventana_eliminar)
         self.addWidget(self.btnEliminar)
 
-        self.btnEditar = QPushButton(text="Edit Word",
+        self.btnEditar = QPushButton(text="Edit Phrase",
                                      icon=QIcon(QPixmap("Imagenes/Blueprint/blueprint--pencil.png")))
         self.btnEditar.pressed.connect(self.abrir_ventana_editar)
         self.btnEditar.setFixedSize(120, 40)
@@ -124,7 +136,7 @@ class MenuOpcionesFrases(QHBoxLayout):
         separator.setFixedSize(5, 40)
         self.addWidget(separator)
 
-        btnBuscar = QPushButton(text="Search Word", icon=QIcon(QPixmap("Imagenes/blue-document-search-result.png")))
+        btnBuscar = QPushButton(text="Search Phrase", icon=QIcon(QPixmap("Imagenes/blue-document-search-result.png")))
         btnBuscar.setFixedSize(120, 40)
         btnBuscar.clicked.connect(self.abrir_ventana_buscar)
         self.addWidget(btnBuscar)

@@ -7,6 +7,7 @@ class FrasesDB:
     _SELECCIONARCATEGORIAS = "SELECT categoria_f FROM frases"
     _SELECCIONARFRASESING = "SELECT f_ingles FROM frases"
     _SELECCIONARFRASESESP = "SELECT f_espanol FROM frases"
+    _INSERTAR = "INSERT INTO frases (f_ingles, f_espanol, categoria_f, descripcion_f) VALUES(%s,%s,%s,%s)"
 
     @classmethod
     def seleccionar_todas_las_frases(cls):
@@ -44,6 +45,20 @@ class FrasesDB:
                 for frase in cursor.fetchall():
                     frases.append(frase[0])
                 return frases
+
+    @classmethod
+    def insertar_frase(cls, frase_ingles, frase_espanol, categoria, descripcion_frase):
+        with Conexion.obtenerConexion() as conexion:
+            with conexion.cursor() as cursor:
+                cursor.execute(cls._INSERTAR, (frase_ingles, frase_espanol, categoria, descripcion_frase))
+
+    @classmethod
+    def actualizar_frase(cls):
+        pass
+
+    @classmethod
+    def eliminar_frase(cls):
+        pass
 
 
 if __name__ == '__main__':

@@ -19,10 +19,10 @@ class VentanaEliminarFrases(QWidget):
         self.layout_botones = QVBoxLayout()
         layout_principal.addLayout(self.layout_botones, 0, 2, 4, 1)
 
-        layout_principal.addWidget(QLabel("Id Word"), 0, 0)
-        layout_principal.addWidget(QLabel("English Word"), 1, 0)
+        layout_principal.addWidget(QLabel("Id Phrase"), 0, 0)
+        layout_principal.addWidget(QLabel("English Phrase"), 1, 0)
         layout_principal.addWidget(QLabel("Spanish Translation"), 2, 0)
-        layout_principal.addWidget(QLabel("Word Description"), 3, 0)
+        layout_principal.addWidget(QLabel("Phrase Description"), 3, 0)
 
         self.id_word = QLineEdit()
         layout_principal.addWidget(self.id_word, 0, 1)

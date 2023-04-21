@@ -4,7 +4,6 @@ from PySide6.QtWidgets import QWidget, QGridLayout, QLabel, QVBoxLayout, QLineEd
     QComboBox
 
 from FrasesDB import FrasesDB
-from PalabrasDB import PalabrasDB
 
 
 class VentanaAgregarFrases(QWidget):
@@ -80,8 +79,9 @@ class VentanaAgregarFrases(QWidget):
 
     def verificar_y_cambiar_textos_p_ingles(self):
         try:
-            palabra = PalabrasDB.seleccionar_registro_p_ingles(self.f_ingles.text())
-            self.f_espanol.setText(palabra[2])
+            pass
+            # palabra = PalabrasDB.seleccionar_registro_p_ingles(self.f_ingles.text())
+            # self.f_espanol.setText(palabra[2])
         except TypeError as e:
             pass
 

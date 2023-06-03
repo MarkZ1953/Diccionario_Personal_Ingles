@@ -4,10 +4,10 @@ from PySide6.QtWidgets import QFrame, QTableWidget, QVBoxLayout, QHeaderView, QH
     QTableWidgetItem, QWidget, QLineEdit, QGridLayout, QLabel, QMessageBox, QErrorMessage, QTextEdit, QCompleter
 
 from PalabrasDB import PalabrasDB
-from Tabuladores.Ventanas_Menu_Palabras.Ventana_Agregar_Palabras import VentanaAgregarPalabras
-from Tabuladores.Ventanas_Menu_Palabras.Ventana_Buscar_Personas import VentanaBuscarPalabras
-from Tabuladores.Ventanas_Menu_Palabras.Ventana_Editar_Palabras import VentanaEditarPalabras
-from Tabuladores.Ventanas_Menu_Palabras.Ventana_Eliminar_Personas import VentanaEliminarPalabras
+from Tabuladores.FormulariosMenuPalabras.FormularioAgregarPalabras import FormularioAgregarPalabras
+from Tabuladores.FormulariosMenuPalabras.FormularioBuscarPalabras import FormularioBuscarPalabras
+from Tabuladores.FormulariosMenuPalabras.FormularioEditarPalabras import VentanaEditarPalabras
+from Tabuladores.FormulariosMenuPalabras.FormularioEliminarPalabras import VentanaEliminarPalabras
 
 
 class TabPalabras(QFrame):
@@ -34,9 +34,9 @@ class TabPalabras(QFrame):
 
     def agregar_palabra(self):
         try:
-            palabra_espanol = self.layout_menu.ventana_agregar.p_espanol.text().strip()
-            palabra_ingles = self.layout_menu.ventana_agregar.p_ingles.text().strip()
-            descripcion = self.layout_menu.ventana_agregar.descripcion_p.toPlainText().strip()
+            palabra_espanol = self.layout_menu.ventana_agregar.txtPalabraEspanol.text().strip()
+            palabra_ingles = self.layout_menu.ventana_agregar.txtPalabraIngles.text().strip()
+            descripcion = self.layout_menu.ventana_agregar.txtDescripcionPalabra.toPlainText().strip()
 
             if palabra_espanol.isalpha() and palabra_ingles.isalpha():
                 datos = [
@@ -45,9 +45,7 @@ class TabPalabras(QFrame):
                     descripcion
                 ]
 
-                PalabrasDB().insertar_palabra(palabra_ingles=datos[0],
-                                              palabra_espanol=datos[1],
-                                              descripcion=datos[2])
+                PalabrasDB().agregarPalabra(palabra_ingles=datos[0], palabra_espanol=datos[1], descripcion=datos[2])
 
             else:
                 QMessageBox.critical(self, "Error", "Could not insert data, please restart or try again",
@@ -66,10 +64,8 @@ class TabPalabras(QFrame):
             descripcion = self.layout_menu.ventana_editar.descripcion_p.toPlainText().strip()
 
             # Orden: (Palabra espanol, palabra ingles, descripcion palabra, id_palabra)
-            PalabrasDB.actualizar_registro(palabra_espanol=palabra_espanol,
-                                           palabra_ingles=palabra_ingles,
-                                           descripcion_palabra=descripcion,
-                                           id_palabra=id_palabra)
+            PalabrasDB.actualizarPalabra(palabra_espanol=palabra_espanol, palabra_ingles=palabra_ingles,
+                                         descripcion_palabra=descripcion, id_palabra=id_palabra)
         except Exception as e:
             pass
         finally:
@@ -80,7 +76,7 @@ class TabPalabras(QFrame):
     def eliminar_palabra(self):
         try:
             id_palabra = self.layout_menu.ventana_eliminar.id_word.text()
-            PalabrasDB.eliminar_palabra(id_palabra=id_palabra)
+            PalabrasDB.eliminarPalabra(id_palabra=id_palabra)
         except Exception as e:
             pass
         finally:
@@ -93,10 +89,10 @@ class MenuOpcionesPalabras(QHBoxLayout):
     def __init__(self):
         super().__init__()
 
-        self.ventana_agregar = VentanaAgregarPalabras()
+        self.ventana_agregar = FormularioAgregarPalabras()
         self.ventana_eliminar = VentanaEliminarPalabras()
         self.ventana_editar = VentanaEditarPalabras()
-        self.ventana_buscar = VentanaBuscarPalabras()
+        self.ventana_buscar = FormularioBuscarPalabras()
 
         self.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
@@ -159,7 +155,7 @@ class TablaPalabras(QTableWidget):
         self.actualizar_tabla()
 
     def actualizar_tabla(self):
-        datos = PalabrasDB().seleccionar_todas_las_palabras()
+        datos = PalabrasDB().seleccionarTodasLasPalabras()
 
         format = QTextCharFormat()
         format.setFontUnderline(True)

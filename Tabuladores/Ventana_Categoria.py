@@ -12,27 +12,27 @@ class VentanaCategorias(QWidget):
         # Creamos un Layout Principal
         layoutPrincipal = QHBoxLayout()
 
-        layout_botones = QVBoxLayout()
-        layout_form = QGridLayout()
+        layoutBotones = QVBoxLayout()
+        layoutForm = QGridLayout()
 
-        layout_form.addWidget(QLabel("Id Categoria"), 0, 0)
+        layoutForm.addWidget(QLabel("Id Categoria"), 0, 0)
 
         # Creamos y agregamos los botones al layout de botones
         btnAgregar = QPushButton("Add")
-        layout_botones.addWidget(btnAgregar)
+        layoutBotones.addWidget(btnAgregar)
 
         btnEditar = QPushButton("Edit")
-        layout_botones.addWidget(btnEditar)
+        layoutBotones.addWidget(btnEditar)
 
         btnEliminar = QPushButton("Delete")
-        layout_botones.addWidget(btnEliminar)
+        layoutBotones.addWidget(btnEliminar)
 
         btnCerrar = QPushButton("Close")
-        layout_botones.addWidget(btnCerrar)
+        layoutBotones.addWidget(btnCerrar)
 
         # Agregamos los layouts al layout principal
-        layoutPrincipal.addLayout(layout_form)
-        layoutPrincipal.addLayout(layout_botones)
+        layoutPrincipal.addLayout(layoutForm)
+        layoutPrincipal.addLayout(layoutBotones)
 
         self.setLayout(layoutPrincipal)
 

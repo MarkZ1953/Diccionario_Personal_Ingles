@@ -45,18 +45,18 @@ class VentanaBuscarFrases(QWidget):
 
         self.btnNuevo = QPushButton("Clean")
         self.btnNuevo.setIcon(QIcon(QPixmap("Imagenes/Blueprint/blueprint.png")))
-        self.btnNuevo.clicked.connect(self.limpiar_cajas)
+        self.btnNuevo.clicked.connect(self.limpiarCajasFormularioBuscarFrases)
         self.btnNuevo.setFixedSize(80, 35)
         self.layout_botones.addWidget(self.btnNuevo)
 
-        palabras_espanol = PalabrasDB.seleccionar_una_columna("p_espanol")
-        palabras_ingles = PalabrasDB.seleccionar_una_columna("p_ingles")
+        frasesEspanol = PalabrasDB.seleccionar_una_columna("p_espanol")
+        frasesIngles = PalabrasDB.seleccionar_una_columna("p_ingles")
 
-        resultados_espanol = QCompleter(palabras_espanol)
+        resultados_espanol = QCompleter(frasesEspanol)
         resultados_espanol.setCaseSensitivity(Qt.CaseInsensitive)
         resultados_espanol.setFilterMode(Qt.MatchContains)
 
-        resultados_ingles = QCompleter(palabras_ingles)
+        resultados_ingles = QCompleter(frasesIngles)
         resultados_ingles.setCaseSensitivity(Qt.CaseInsensitive)
         resultados_ingles.setFilterMode(Qt.MatchContains)
 
@@ -73,7 +73,7 @@ class VentanaBuscarFrases(QWidget):
 
     def verificar_y_cambiar_textos_p_ingles(self):
         try:
-            palabra = PalabrasDB.seleccionar_registro_p_ingles(self.p_ingles.text())
+            palabra = PalabrasDB.seleccionarPalabraIngles(self.p_ingles.text())
             self.id_word.setText(str(palabra[0]))
             self.p_espanol.setText(palabra[2])
             self.descripcion_p.setText(palabra[3])
@@ -82,7 +82,7 @@ class VentanaBuscarFrases(QWidget):
 
     def verificar_y_cambiar_textos_p_espanol(self):
         try:
-            palabra = PalabrasDB.seleccionar_registro_p_espanol(self.p_espanol.text())
+            palabra = PalabrasDB.seleccionarPalabraEspanol(self.p_espanol.text())
             self.id_word.setText(str(palabra[0]))
             self.p_ingles.setText(palabra[1])
             self.descripcion_p.setText(palabra[3])
@@ -91,14 +91,14 @@ class VentanaBuscarFrases(QWidget):
 
     def verificar_y_cambiar_textos_id(self):
         try:
-            palabra = PalabrasDB.seleccionar_registro_id(self.id_word.text())
+            palabra = PalabrasDB.seleccionarIdPalabra(self.id_word.text())
             self.p_espanol.setText(palabra[2])
             self.p_ingles.setText(palabra[1])
             self.descripcion_p.setText(palabra[3])
         except Exception as e:
             pass
 
-    def limpiar_cajas(self):
+    def limpiarCajasFormularioBuscarFrases(self):
         self.id_word.setText("")
         self.p_ingles.setText("")
         self.p_espanol.setText("")

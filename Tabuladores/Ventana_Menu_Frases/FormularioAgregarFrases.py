@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QWidget, QGridLayout, QLabel, QVBoxLayout, QLineEd
 from FrasesDB import FrasesDB
 
 
-class VentanaAgregarFrases(QWidget):
+class FormularioAgregarFrases(QWidget):
     def __init__(self):
         super().__init__()
 
@@ -51,7 +51,7 @@ class VentanaAgregarFrases(QWidget):
 
         self.btnNuevo = QPushButton("New")
         self.btnNuevo.setIcon(QIcon(QPixmap("Imagenes/Blueprint/blueprint.png")))
-        self.btnNuevo.clicked.connect(self.limpiar_cajas)
+        self.btnNuevo.clicked.connect(self.limpiarCajasFormularioAgregarFrases)
         self.btnNuevo.setFixedSize(80, 35)
         self.layout_botones.addWidget(self.btnNuevo)
 
@@ -94,7 +94,7 @@ class VentanaAgregarFrases(QWidget):
         except TypeError as e:
             pass
 
-    def limpiar_cajas(self):
+    def limpiarCajasFormularioAgregarFrases(self):
         self.f_ingles.setText("")
         self.f_espanol.setText("")
         self.descripcion_f.setText("")

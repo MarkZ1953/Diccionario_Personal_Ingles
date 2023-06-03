@@ -5,12 +5,12 @@ from PySide6.QtWidgets import QWidget, QGridLayout, QLabel, QVBoxLayout, QLineEd
 from PalabrasDB import PalabrasDB
 
 
-class VentanaEliminarPalabras(QWidget):
+class VentanaEditarPalabras(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Delete Word")
-        self.setFixedSize(400, 250)
+        self.setWindowTitle("Edit Word")
+        self.setFixedSize(450, 250)
         self.setContentsMargins(10, 10, 10, 10)
         self.setWindowIcon(QIcon(QPixmap("Imagenes/book.png")))
 
@@ -44,7 +44,7 @@ class VentanaEliminarPalabras(QWidget):
         layout_principal.addWidget(self.descripcion_p, 3, 1)
 
         self.btnGuardar = QPushButton("Save")
-        self.btnGuardar.setIcon(QIcon(QPixmap("Imagenes/Disk/disk--minus.png")))
+        self.btnGuardar.setIcon(QIcon(QPixmap("Imagenes/Disk/disk--pencil.png")))
         self.btnGuardar.setFixedSize(80, 35)
         self.layout_botones.addWidget(self.btnGuardar)
 
@@ -66,7 +66,7 @@ class VentanaEliminarPalabras(QWidget):
 
     def verificar_y_cambiar_textos_p_ingles(self):
         try:
-            palabra = PalabrasDB.seleccionar_registro_p_ingles(self.p_ingles.text())
+            palabra = PalabrasDB.seleccionarPalabraIngles(self.p_ingles.text())
             self.id_word.setText(str(palabra[0]))
             self.p_espanol.setText(palabra[2])
             self.descripcion_p.setText(palabra[3])
@@ -75,7 +75,7 @@ class VentanaEliminarPalabras(QWidget):
 
     def verificar_y_cambiar_textos_p_espanol(self):
         try:
-            palabra = PalabrasDB.seleccionar_registro_p_espanol(self.p_espanol.text())
+            palabra = PalabrasDB.seleccionarPalabraEspanol(self.p_espanol.text())
             self.id_word.setText(str(palabra[0]))
             self.p_ingles.setText(palabra[1])
             self.descripcion_p.setText(palabra[3])
@@ -84,7 +84,7 @@ class VentanaEliminarPalabras(QWidget):
 
     def verificar_y_cambiar_textos_id(self):
         try:
-            palabra = PalabrasDB.seleccionar_registro_id(self.id_word.text())
+            palabra = PalabrasDB.seleccionarIdPalabra(self.id_word.text())
             self.p_espanol.setText(palabra[2])
             self.p_ingles.setText(palabra[1])
             self.descripcion_p.setText(palabra[3])

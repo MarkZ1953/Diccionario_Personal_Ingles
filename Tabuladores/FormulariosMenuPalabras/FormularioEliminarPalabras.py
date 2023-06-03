@@ -5,12 +5,12 @@ from PySide6.QtWidgets import QWidget, QGridLayout, QLabel, QVBoxLayout, QLineEd
 from PalabrasDB import PalabrasDB
 
 
-class VentanaBuscarPalabras(QWidget):
+class VentanaEliminarPalabras(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Search Word")
-        self.setFixedSize(400, 250)
+        self.setWindowTitle("Delete Word")
+        self.setFixedSize(450, 250)
         self.setContentsMargins(10, 10, 10, 10)
         self.setWindowIcon(QIcon(QPixmap("Imagenes/book.png")))
 
@@ -43,11 +43,61 @@ class VentanaBuscarPalabras(QWidget):
         self.setMinimumSize(100, 120)
         layout_principal.addWidget(self.descripcion_p, 3, 1)
 
+        self.btnGuardar = QPushButton("Delete")
+        self.btnGuardar.setIcon(QIcon(QPixmap("Imagenes/Disk/disk--minus.png")))
+        self.btnGuardar.setFixedSize(80, 35)
+        self.layout_botones.addWidget(self.btnGuardar)
+
         self.btnNuevo = QPushButton("Clean")
         self.btnNuevo.setIcon(QIcon(QPixmap("Imagenes/Blueprint/blueprint.png")))
         self.btnNuevo.clicked.connect(self.limpiar_cajas)
         self.btnNuevo.setFixedSize(80, 35)
         self.layout_botones.addWidget(self.btnNuevo)
+
+        self.actualizar_completer()
+
+        btnSalir = QPushButton("Exit")
+        btnSalir.setIcon(QIcon(QPixmap("Imagenes/cross-circle.png")))
+        btnSalir.clicked.connect(lambda: self.close())
+        btnSalir.setFixedSize(80, 35)
+        self.layout_botones.addWidget(btnSalir)
+
+        self.setLayout(layout_principal)
+
+    def verificar_y_cambiar_textos_p_ingles(self):
+        try:
+            palabra = PalabrasDB.seleccionarPalabraIngles(self.p_ingles.text())
+            self.id_word.setText(str(palabra[0]))
+            self.p_espanol.setText(palabra[2])
+            self.descripcion_p.setText(palabra[3])
+        except TypeError as e:
+            pass
+
+    def verificar_y_cambiar_textos_p_espanol(self):
+        try:
+            palabra = PalabrasDB.seleccionarPalabraEspanol(self.p_espanol.text())
+            self.id_word.setText(str(palabra[0]))
+            self.p_ingles.setText(palabra[1])
+            self.descripcion_p.setText(palabra[3])
+        except TypeError as e:
+            pass
+
+    def verificar_y_cambiar_textos_id(self):
+        try:
+            palabra = PalabrasDB.seleccionarIdPalabra(self.id_word.text())
+            self.p_espanol.setText(palabra[2])
+            self.p_ingles.setText(palabra[1])
+            self.descripcion_p.setText(palabra[3])
+        except Exception as e:
+            pass
+
+    def limpiar_cajas(self):
+        self.id_word.setText("")
+        self.p_ingles.setText("")
+        self.p_espanol.setText("")
+        self.descripcion_p.setText("")
+
+    def actualizar_completer(self):
 
         palabras_espanol = PalabrasDB.seleccionar_una_columna("p_espanol")
         palabras_ingles = PalabrasDB.seleccionar_una_columna("p_ingles")
@@ -62,44 +112,3 @@ class VentanaBuscarPalabras(QWidget):
 
         self.p_espanol.setCompleter(resultados_espanol)
         self.p_ingles.setCompleter(resultados_ingles)
-
-        btnSalir = QPushButton("Exit")
-        btnSalir.setIcon(QIcon(QPixmap("Imagenes/cross-circle.png")))
-        btnSalir.clicked.connect(lambda: self.close())
-        btnSalir.setFixedSize(80, 35)
-        self.layout_botones.addWidget(btnSalir)
-
-        self.setLayout(layout_principal)
-
-    def verificar_y_cambiar_textos_p_ingles(self):
-        try:
-            palabra = PalabrasDB.seleccionar_registro_p_ingles(self.p_ingles.text())
-            self.id_word.setText(str(palabra[0]))
-            self.p_espanol.setText(palabra[2])
-            self.descripcion_p.setText(palabra[3])
-        except TypeError as e:
-            pass
-
-    def verificar_y_cambiar_textos_p_espanol(self):
-        try:
-            palabra = PalabrasDB.seleccionar_registro_p_espanol(self.p_espanol.text())
-            self.id_word.setText(str(palabra[0]))
-            self.p_ingles.setText(palabra[1])
-            self.descripcion_p.setText(palabra[3])
-        except TypeError as e:
-            pass
-
-    def verificar_y_cambiar_textos_id(self):
-        try:
-            palabra = PalabrasDB.seleccionar_registro_id(self.id_word.text())
-            self.p_espanol.setText(palabra[2])
-            self.p_ingles.setText(palabra[1])
-            self.descripcion_p.setText(palabra[3])
-        except Exception as e:
-            pass
-
-    def limpiar_cajas(self):
-        self.id_word.setText("")
-        self.p_ingles.setText("")
-        self.p_espanol.setText("")
-        self.descripcion_p.setText("")

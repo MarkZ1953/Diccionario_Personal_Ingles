@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QFrame, QTableWidgetItem, QVBoxLayout, QHBoxLayout
     QTableWidget
 
 from FrasesDB import FrasesDB
-from Tabuladores.Ventana_Menu_Frases.Ventana_Agregar_Frases import VentanaAgregarFrases
+from Tabuladores.Ventana_Menu_Frases.FormularioAgregarFrases import FormularioAgregarFrases
 from Tabuladores.Ventana_Menu_Frases.Ventana_Buscar_Frases import VentanaBuscarFrases
 from Tabuladores.Ventana_Menu_Frases.Ventana_Editar_Frases import VentanaEditarFrases
 from Tabuladores.Ventana_Menu_Frases.Ventana_Eliminar_Frases import VentanaEliminarFrases
@@ -105,7 +105,7 @@ class MenuOpcionesFrases(QHBoxLayout):
     def __init__(self):
         super().__init__()
 
-        self.ventana_agregar = VentanaAgregarFrases()
+        self.ventana_agregar = FormularioAgregarFrases()
         self.ventana_eliminar = VentanaEliminarFrases()
         self.ventana_editar = VentanaEditarFrases()
         self.ventana_buscar = VentanaBuscarFrases()

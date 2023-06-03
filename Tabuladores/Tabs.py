@@ -1,8 +1,7 @@
-from PySide6.QtWidgets import QTabWidget, QWidget, QFrame
+from PySide6.QtWidgets import QTabWidget
 
 from Tabuladores.TabFrases import TabFrases
 from Tabuladores.TabPalabras import TabPalabras
-
 
 
 class Tabs(QTabWidget):
@@ -10,10 +9,9 @@ class Tabs(QTabWidget):
         super().__init__()
 
         # Creamos el tab de palabras
-        tab_palabras = TabPalabras()
-        self.addTab(tab_palabras, "Words")
+        tabPalabras = TabPalabras()
+        self.addTab(tabPalabras, "Words")
 
-        # Creamos el tab de palabras
-        tab_frases = TabFrases()
-        self.addTab(tab_frases, "Phrases")
-
+        # Creamos el tab de frases
+        tabFrases = TabFrases()
+        self.addTab(tabFrases, "Phrases")

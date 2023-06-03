@@ -66,7 +66,7 @@ class VentanaEditarFrases(QWidget):
 
     def verificar_y_cambiar_textos_p_ingles(self):
         try:
-            palabra = PalabrasDB.seleccionar_registro_p_ingles(self.p_ingles.text())
+            palabra = PalabrasDB.seleccionarPalabraIngles(self.p_ingles.text())
             self.id_word.setText(str(palabra[0]))
             self.p_espanol.setText(palabra[2])
             self.descripcion_p.setText(palabra[3])
@@ -75,7 +75,7 @@ class VentanaEditarFrases(QWidget):
 
     def verificar_y_cambiar_textos_p_espanol(self):
         try:
-            palabra = PalabrasDB.seleccionar_registro_p_espanol(self.p_espanol.text())
+            palabra = PalabrasDB.seleccionarPalabraEspanol(self.p_espanol.text())
             self.id_word.setText(str(palabra[0]))
             self.p_ingles.setText(palabra[1])
             self.descripcion_p.setText(palabra[3])
@@ -84,7 +84,7 @@ class VentanaEditarFrases(QWidget):
 
     def verificar_y_cambiar_textos_id(self):
         try:
-            palabra = PalabrasDB.seleccionar_registro_id(self.id_word.text())
+            palabra = PalabrasDB.seleccionarIdPalabra(self.id_word.text())
             self.p_espanol.setText(palabra[2])
             self.p_ingles.setText(palabra[1])
             self.descripcion_p.setText(palabra[3])

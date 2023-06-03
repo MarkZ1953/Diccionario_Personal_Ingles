@@ -1,6 +1,7 @@
 import psycopg2 as bd
 import sys
 
+
 class Conexion:
     _DATABASE = 'diccionario_ingles'
     _USERNAME = 'postgres'

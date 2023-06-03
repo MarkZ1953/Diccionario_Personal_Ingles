@@ -6,9 +6,12 @@ from Tabuladores.Tabs import Tabs
 class DiccionarioIngles(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("English Dictionary")
-        self.resize(800, 600)
 
+        # Agregamos algunas configuraciones a la Ventana
+        self.setWindowTitle("English Dictionary")
+        self.resize(1000, 800)
+
+        # Creamos los Tabs
         tabs = Tabs()
 
         self.setCentralWidget(tabs)
